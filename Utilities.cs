@@ -36,4 +36,38 @@ public class Utilities : MonoBehaviour {
             return 1;
         }
     }
+
+    //Raycasting
+    void createHandRaycast(GameObject hand)
+    {
+        var rayX = hand.transform.position.x;
+        var rayY = hand.transform.position.y;
+        var rayZ = hand.transform.position.z;
+        var indexFingerPos = new Vector3(rayX, rayY, rayZ);
+
+        pointer = new Ray(indexFingerPos, hand.transform.forward);
+        lineRenderer.widthMultiplier = 0.01f;
+        lineRenderer.SetPosition(0, pointer.origin);
+        lineRenderer.SetPosition(1, pointer.origin + pointer.direction * playerRange);
+    }
+
+    GameObject handRaycastObject(GameObject hand)
+    {
+        createHandRaycast(hand);
+        RaycastHit hit;
+        if (Physics.Raycast(pointer, out hit, playerRange))
+        {
+            return hit.collider.gameObject;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    GameObject handRaycastPoint(GameObject hand)
+    {
+        createHandRaycast(hand);
+        return null;
+    }
 }
